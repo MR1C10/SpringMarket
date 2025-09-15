@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Lista de Compras</h1>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-blue-100 p-4 rounded-lg">
+                <div class="text-blue-800 text-sm font-medium">Itens pendentes</div>
+                <div class="text-blue-900 text-2xl font-bold" th:text="${totalNaoComprados}">0</div>
+            </div>
+            <div class="bg-green-100 p-4 rounded-lg">
+                <div class="text-green-800 text-sm font-medium">Itens comprados</div>
+                <div class="text-green-900 text-2xl font-bold" th:text="${totalComprados}">0</div>
+            </div>
+        </div>
+        
+        <div th:if="${sucesso}" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <span th:text="${sucesso}"></span>
+        </div>
+        
+        <div th:if="${erro}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <span th:text="${erro}"></span>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <form th:action="@{/}" method="get" class="flex gap-4">
+                <input type="text" name="busca" th:value="${busca}" placeholder="Buscar item..."
+                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Buscar
+                </button>
+                <a th:href="@{/}" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                    Limpar
+                </a>
+            </form>
+        </div>
+        
+        <!-- Formulário para adicionar item -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Adicionar novo item</h2>
+            <form th:action="@{/adicionar}" method="post" th:object="${novoItem}">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
+                        <input type="text" th:field="*{nome}" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                        <input type="text" th:field="*{categoria}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+                        <input type="number" th:field="*{quantidade}" min="1" value="1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                            Adicionar
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+                    <textarea th:field="*{observacoes}" rows="2"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Lista de itens -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Minha Lista</h2>
+                
+                <div th:if="${#lists.isEmpty(itens)}" class="text-center py-8 text-gray-500">
+                    <p>Nenhum item encontrado na lista.</p>
+                </div>
+                
+                <div th:if="${!#lists.isEmpty(itens)}" class="space-y-3">
+                    <div th:each="item : ${itens}" 
+                         th:classappend="${item.comprado} ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'"
+                         class="border rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3">
+                                    <h3 th:text="${item.nome}" 
+                                        th:classappend="${item.comprado} ? 'line-through text-green-700' : 'text-gray-900'"
+                                        class="text-lg font-medium"></h3>
+                                    <span th:if="${item.categoria}" 
+                                          class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                                          th:text="${item.categoria}"></span>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                                          th:text="'Qtd: ' + ${item.quantidade}"></span>
+                                </div>
+                                <p th:if="${item.observacoes}" 
+                                   th:text="${item.observacoes}"
+                                   class="text-sm text-gray-600 mt-1"></p>
+                                <p class="text-xs text-gray-500 mt-1"
+                                   th:text="'Criado em: ' + ${#temporals.format(item.dataCriacao, 'dd/MM/yyyy HH:mm')}"></p>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <form th:action="@{'/marcar/' + ${item.id}}" method="post" style="display: inline;">
+                                    <button type="submit" 
+                                            th:classappend="${item.comprado} ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700'"
+                                            class="px-3 py-1 text-white text-sm rounded-md">
+                                        <span th:text="${item.comprado} ? 'Desmarcar' : 'Comprado'"></span>
+                                    </button>
+                                </form>
+                                
+                                <a th:href="@{'/editar/' + ${item.id}}" 
+                                   class="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                                    Editar
+                                </a>
+                                
+                                <form th:action="@{'/deletar/' + ${item.id}}" method="post" style="display: inline;"
+                                      onsubmit="return confirm('Tem certeza que deseja remover este item?')">
+                                    <button type="submit" class="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700">
+                                        Remover
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Item - Lista de Compras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="mb-6">
+            <a th:href="@{/}" class="text-blue-600 hover:text-blue-800 font-medium">
+                ← Voltar para lista
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Editar Item</h1>
+            
+            <form th:action="@{'/editar/' + ${item.id}}" method="post" th:object="${item}">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
+                        <input type="text" th:field="*{nome}" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                        <input type="text" th:field="*{categoria}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+                        <input type="number" th:field="*{quantidade}" min="1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+                        <textarea th:field="*{observacoes}" rows="3"
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Salvar Alterações
+                        </button>
+                        <a th:href="@{/}" class="flex-1 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-center">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="mt-6 bg-gray-100 rounded-lg p-4">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Informações do Item</h3>
+            <div class="text-sm text-gray-600 space-y-1">
+                <p><span class="font-medium">Status:</span> 
+                   <span th:text="${item.comprado} ? 'Comprado' : 'Pendente'"
+                         th:classappend="${item.comprado} ? 'text-green-600' : 'text-orange-600'"></span>
+                </p>
+                <p><span class="font-medium">Criado em:</span> 
+                   <span th:text="${#temporals.format(item.dataCriacao, 'dd/MM/yyyy HH:mm')}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
