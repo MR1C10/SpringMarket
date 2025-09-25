@@ -64,15 +64,6 @@ mvn spring-boot:run
 1. Abrir o projeto em sua IDE favorita (IntelliJ IDEA, Eclipse, VS Code)
 2. Executar a classe `ListaComprasApplication.java`
 
-### Método 3: Gerando JAR
-```bash
-# Compilar e gerar o JAR
-mvn clean package
-
-# Executar o JAR
-java -jar target/lista-compras-0.0.1-SNAPSHOT.jar
-```
-
 ## Acesso à Aplicação
 
 Após iniciar a aplicação, acesse:
