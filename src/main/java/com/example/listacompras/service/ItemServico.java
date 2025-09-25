@@ -15,15 +15,15 @@ public class ItemServico {
     private ItemRepositorio itemRepositorio;
     
     public List<Item> listarTodos() {
-        return itemRepositorio.findAllOrderByCompradoAndDataCriacao();
+        return itemRepositorio.findAllOrderByCompradoAndId();
     }
     
     public List<Item> listarPorStatus(Boolean comprado) {
-        return itemRepositorio.findByCompradoOrderByDataCriacaoDesc(comprado);
+        return itemRepositorio.findByCompradoOrderByIdDesc(comprado);
     }
     
     public List<Item> buscarPorNome(String nome) {
-        return itemRepositorio.findByNomeContainingIgnoreCaseOrderByDataCriacaoDesc(nome);
+        return itemRepositorio.findByNomeContainingIgnoreCaseOrderByIdDesc(nome);
     }
     
     public List<Item> listarPorCategoria(String categoria) {

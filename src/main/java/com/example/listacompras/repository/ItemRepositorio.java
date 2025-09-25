@@ -10,14 +10,14 @@ import java.util.List;
 @Repository
 public interface ItemRepositorio extends JpaRepository<Item, Long> {
     
-    List<Item> findByCompradoOrderByDataCriacaoDesc(Boolean comprado);
+    List<Item> findByCompradoOrderByIdDesc(Boolean comprado);
     
     List<Item> findByCategoriaContainingIgnoreCaseOrderByNome(String categoria);
     
-    List<Item> findByNomeContainingIgnoreCaseOrderByDataCriacaoDesc(String nome);
+    List<Item> findByNomeContainingIgnoreCaseOrderByIdDesc(String nome);
     
-    @Query("SELECT i FROM Item i ORDER BY i.comprado ASC, i.dataCriacao DESC")
-    List<Item> findAllOrderByCompradoAndDataCriacao();
+    @Query("SELECT i FROM Item i ORDER BY i.comprado ASC, i.id DESC")
+    List<Item> findAllOrderByCompradoAndId();
     
     Long countByComprado(Boolean comprado);
 }
