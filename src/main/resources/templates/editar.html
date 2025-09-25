@@ -62,9 +62,6 @@
                    <span th:text="${item.comprado} ? 'Comprado' : 'Pendente'"
                          th:classappend="${item.comprado} ? 'text-green-600' : 'text-orange-600'"></span>
                 </p>
-                <p><span class="font-medium">Criado em:</span> 
-                   <span th:text="${#temporals.format(item.dataCriacao, 'dd/MM/yyyy HH:mm')}"></span>
-                </p>
             </div>
         </div>
     </div>

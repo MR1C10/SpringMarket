@@ -104,8 +104,6 @@
                                 <p th:if="${item.observacoes}" 
                                    th:text="${item.observacoes}"
                                    class="text-sm text-gray-600 mt-1"></p>
-                                <p class="text-xs text-gray-500 mt-1"
-                                   th:text="'Criado em: ' + ${#temporals.format(item.dataCriacao, 'dd/MM/yyyy HH:mm')}"></p>
                             </div>
                             
                             <div class="flex gap-2">
