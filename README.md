@@ -60,10 +60,6 @@ cd SpringMarket
 mvn spring-boot:run
 ```
 
-### Método 2: Via IDE
-1. Abrir o projeto em sua IDE favorita (IntelliJ IDEA, Eclipse, VS Code)
-2. Executar a classe `ListaComprasApplication.java`
-
 ## Acesso à Aplicação
 
 Após iniciar a aplicação, acesse:
